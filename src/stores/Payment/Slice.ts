@@ -26,10 +26,10 @@ const initialState: paymentType = {
         images: [],
       },
   paymentInfo: {
-    number: "",
-    expiry: "",
-    cvc: "",
-    name: "",
+    number: localStorage.getItem("numberCard") ?? "",
+    expiry: localStorage.getItem("expiryCard") ?? "",
+    cvc: localStorage.getItem("cvcCard") ?? "",
+    name: localStorage.getItem("nameCard") ?? "",
   },
 };
 
@@ -46,15 +46,48 @@ const paymentSlice = createSlice({
       localStorage.getItem("product") ??
         localStorage.setItem("product", JSON.stringify(state.product));
     },
-    setPayment: (state, action: PayloadAction<paymentInfoType>) => {
-      state.paymentInfo = action.payload;
-    },
     setSize: (state, action: PayloadAction<string>) => {
       state.product.sizeSelected = action.payload;
+    },
+    setNumber: (state, action: PayloadAction<string>) => {
+      state.paymentInfo.number = action.payload;
+
+      if (action.payload.length > 16) {
+        state.paymentInfo.number = action.payload.slice(0, 16);
+      }
+
+      localStorage.setItem("numberCard", state.paymentInfo.number);
+    },
+    setExpiry: (state, action: PayloadAction<string>) => {
+      state.paymentInfo.expiry = action.payload;
+
+      if (action.payload.length > 4) {
+        state.paymentInfo.expiry = action.payload.slice(0, 4);
+      }
+
+      localStorage.setItem("expiryCard", state.paymentInfo.expiry);
+    },
+    setCvc: (state, action: PayloadAction<string>) => {
+      state.paymentInfo.cvc = action.payload;
+
+      if (action.payload.length > 3) {
+        state.paymentInfo.cvc = action.payload.slice(0, 3);
+      }
+      localStorage.setItem("cvcCard", state.paymentInfo.cvc);
+    },
+    setName: (state, action: PayloadAction<string>) => {
+      state.paymentInfo.name = action.payload.toUpperCase();
+
+      if (action.payload.length > 20) {
+        state.paymentInfo.name = action.payload.slice(0, 20);
+      }
+
+      localStorage.setItem("nameCard", state.paymentInfo.name);
     },
   },
 });
 
-export const { setProduct, setPayment, setSize } = paymentSlice.actions;
+export const { setName, setCvc, setExpiry, setNumber, setProduct, setSize } =
+  paymentSlice.actions;
 
 export default paymentSlice.reducer;
