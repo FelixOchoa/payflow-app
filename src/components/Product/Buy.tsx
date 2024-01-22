@@ -1,5 +1,6 @@
 import { ProductInfoType } from "../../utils/ProductInfo";
 import { useBuy } from "./Hooks/useBuy";
+import toast from "react-hot-toast";
 
 type BuyProps = {
   setOpenModal: (value: boolean) => void;
@@ -10,7 +11,9 @@ export const Buy = ({ setOpenModal, product }: BuyProps) => {
   const { size, handleBuy } = useBuy(product);
 
   const handlePayment = () => {
-    if (size === "") return;
+    if (size === "") {
+      return toast.error("Debes seleccionar una talla");
+    }
     setOpenModal(true);
     handleBuy();
   };
