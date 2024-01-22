@@ -1,13 +1,18 @@
+import { useDispatch } from "react-redux";
+import { setSize } from "../../stores/Payment/Slice";
+
 type ProductType = {
   name: string;
   review: string;
   sold: string;
   price: number;
-  sizes: string[];
-  color: string[];
+  sizes?: string[];
+  color?: string[];
 };
 
 export const InfoProduct = ({ product }: { product: ProductType }) => {
+  const dispatch = useDispatch();
+
   return (
     <div className="h-full px-4 flex flex-col">
       <h1 className="text-xl font-bold">{product.name}</h1>
@@ -18,7 +23,7 @@ export const InfoProduct = ({ product }: { product: ProductType }) => {
       <p className="text-2xl font-bold">COP ${product.price}</p>
       <div className="flex flex-row gap-2 pt-4 pb-4">
         <p className="text-sm text-gray-500">Color:</p>
-        {product.color.map((color, index: number) => (
+        {product.color?.map((color, index: number) => (
           <p key={index} className="text-sm text-gray-500">
             {color}
           </p>
@@ -27,8 +32,11 @@ export const InfoProduct = ({ product }: { product: ProductType }) => {
 
       <p className="font-semibold text-sm">Tallas:</p>
       <div className="flex flex-row gap-2 pt-4 pb-4">
-        {product.sizes.map((size, index: number) => (
+        {product.sizes?.map((size, index: number) => (
           <p
+            onClick={() => {
+              dispatch(setSize(size));
+            }}
             key={index}
             className="text-sm font-semibold border border-gray-300 rounded-full py-2 px-8 cursor-pointer hover:bg-gray-300 hover:text-gray-700 transition duration-300 ease-in-out text-gray-500"
           >
