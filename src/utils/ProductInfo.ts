@@ -1,7 +1,3 @@
-import firstImage from "../assets/product/shirt-1.webp";
-import secondImage from "../assets/product/shirt-2.webp";
-import thirdImage from "../assets/product/shirt-3.webp";
-
 export type ProductInfoType = {
   name: string;
   review: string;
@@ -29,15 +25,15 @@ export const ProductInfo: ProductInfoType = {
   images: [
     {
       id: 1,
-      url: firstImage,
+      url: "https://imgur.com/Pe6s7ld.png",
     },
     {
       id: 2,
-      url: secondImage,
+      url: "https://imgur.com/pE00G3K.png",
     },
     {
       id: 3,
-      url: thirdImage,
+      url: "https://imgur.com/nKXQBJ1.png",
     },
   ],
 };
