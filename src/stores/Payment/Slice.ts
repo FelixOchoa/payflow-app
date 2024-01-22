@@ -1,9 +1,14 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ProductInfoType } from "../../utils/ProductInfo";
 
-type paymentType = {
+export type paymentType = {
   product: ProductInfoType;
   paymentInfo: paymentInfoType;
+  response?: {
+    message?: string;
+    data?: paymentType;
+    success?: boolean;
+  };
 };
 
 type paymentInfoType = {
@@ -31,6 +36,7 @@ const initialState: paymentType = {
     cvc: localStorage.getItem("cvcCard") ?? "",
     name: localStorage.getItem("nameCard") ?? "",
   },
+  response: {},
 };
 
 const paymentSlice = createSlice({
@@ -85,7 +91,41 @@ const paymentSlice = createSlice({
       localStorage.setItem("nameCard", state.paymentInfo.name);
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(sendPaymentSuccess.fulfilled, (state, action) => {
+      state.response = action.payload;
+      return state;
+    });
+    builder.addCase(sendPaymentError.fulfilled, (state, action) => {
+      state.response = action.payload;
+      return state;
+    });
+  },
 });
+
+export const sendPaymentSuccess = createAsyncThunk(
+  "payment/sendPaymentSuccess",
+  async (paymentInfo: paymentType) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    return {
+      message: "Pago realizado con éxito",
+      data: paymentInfo,
+      success: true,
+    };
+  }
+);
+
+export const sendPaymentError = createAsyncThunk(
+  "payment/sendPaymentError",
+  async (paymentInfo: paymentType) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    return {
+      message: "Error al realizar el pago",
+      data: paymentInfo,
+      success: false,
+    };
+  }
+);
 
 export const { setName, setCvc, setExpiry, setNumber, setProduct, setSize } =
   paymentSlice.actions;

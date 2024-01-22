@@ -21,8 +21,6 @@ export const useCard = () => {
   const dispatch = useDispatch();
   const { paymentInfo } = useSelector((state: RootState) => state.payment);
 
-  console.log(paymentInfo);
-
   const [card, setCard] = useState<CardProps>({
     cvc: paymentInfo.cvc,
     expiry: paymentInfo.expiry,

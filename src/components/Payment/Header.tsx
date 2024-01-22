@@ -1,13 +1,21 @@
+import { useDispatch } from "react-redux";
+import { setStep } from "../../stores/System/Slice";
+
 type HeaderProps = {
+  title: string;
   setOpenModal: (value: boolean) => void;
 };
 
-export const Header = ({ setOpenModal }: HeaderProps) => {
+export const Header = ({ title, setOpenModal }: HeaderProps) => {
+  const dispatch = useDispatch();
   return (
     <div className="flex flex-row justify-between items-center">
-      <h1 className="font-semibold text-lg">Datos de facturación</h1>
+      <h1 className="font-semibold text-lg">{title}</h1>
       <button
-        onClick={() => setOpenModal(false)}
+        onClick={() => {
+          setOpenModal(false);
+          dispatch(setStep(1));
+        }}
         className="text-gray-400 hover:text-gray-500 transition duration-300 ease-in-out"
       >
         <svg
